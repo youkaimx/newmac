@@ -5,8 +5,9 @@ Ansible playbook to setup common software on a new mac
 
 ## Using the playbook
 
-Install the fonts:
-`% ansible-playbook -i inventory --tags fonts new-macbook.yaml --verbose`
+Examples of how to use this playbook
 
-Install `brew` formulae:
-`% ansible-playbook -i inventory --tags formulae new-macbook.yaml --verbose`ll
+- Install the fonts:
+`% ansible-playbook -i inventory --tags fonts new-macbook.yaml --verbose`
+- Install `brew` formulae:
+`% ansible-playbook -i inventory --tags formulae new-macbook.yaml --verbose`
