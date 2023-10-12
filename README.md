@@ -11,3 +11,6 @@ Examples of how to use this playbook
 `% ansible-playbook -i inventory --tags fonts new-macbook.yaml --verbose`
 - Install `brew` formulae:
 `% ansible-playbook -i inventory --tags formulae new-macbook.yaml --verbose`
+
+## To do
+- Add a task to add config files like the James Tooze's neovim setup from  https://github.com/toozej/neovimfiles
