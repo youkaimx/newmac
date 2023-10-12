@@ -1,0 +1,106 @@
+---
+- name: Bootstrap new macbook
+  hosts: localhost
+  connection: local
+  vars:
+    fonts_details:
+      - name: FiraCode
+        archive:
+          https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip
+        directory: ttf
+        files:
+          - FiraCode-Bold.ttf
+          - FiraCode-Light.ttf
+          - FiraCode-Medium.ttf
+          - FiraCode-Regular.ttf
+          - FiraCode-Retina.ttf
+      # yamllint disable rule:comments-indentation
+      # - name: Monoid
+      #   archive: https://github.com/jb-dmitry/monoid.git
+      #   directory: Monoisome
+      #   files:
+      #     - Monoisome-Regular.ttf
+      # yamllint enable rule:comments-indentation
+  tasks:
+    - name: Install casks
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - iterm2
+        - visual-studio-code
+        - rectangle
+        - bitwarden
+      tags:
+        - brew
+        - casks
+    - name: Install formulae
+      community.general.homebrew:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - wget
+        - pre-commit
+        - ansible-lint
+        - shellcheck
+        - bitwarden-cli
+        - jq
+        - yq
+        - golang
+        - nvim
+        - tfenv
+        - awscli
+        - oh-my-posh
+      tags:
+        - brew
+        - formulae
+    - name: Install terraform variants
+      ansible.builtin.command:
+        argv:
+          - tfenv
+          - install
+          - "{{ item }}"
+      loop:
+        - 0.13.5
+        - 0.13.7
+        - 0.14.11
+        - 1.3.2
+        - 1.3.7
+    - name: Update and upgrade homebrew software
+      community.general.homebrew:
+        update_homebrew: true
+        upgrade_all: true
+    - name: Mac Fonts | Download repositories
+      ansible.builtin.get_url:
+        url: "{{ item.archive }}"
+        dest: "/tmp/{{ item.archive.split('/')|last }}"
+      with_items: "{{ fonts_details }}"
+      tags:
+        - fonts
+        - never
+    - name: Mac Fonts | Unzip
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ item.archive.split('/')|last }}"
+        dest: "/tmp"
+      with_items: "{{ fonts_details }}"
+      tags:
+        - fonts
+        - never
+    - name: Mac Fonts | Install fonts from repositories
+      copy:
+        src: "/tmp/{{ item.0.directory }}/{{ item.1 }}"
+        dest: "/Users/{{ lookup('env', 'USER') }}/Library/Fonts/{{ item.1 }}"
+      with_subelements:
+        - "{{ fonts_details }}"
+        - "files"
+      tags:
+        - fonts
+        - never
+    - name: Add oh-my-posh to zshrc
+      ansible.builtin.lineinfile:
+        path: "/Users/{{ lookup('env', 'USER') }}/.zshrc"
+        line: eval "$(oh-my-posh init zsh)"
+        state: present
+        search_string: "oh-my-posh init zsh"
+      tags:
+        - config_files
