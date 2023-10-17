@@ -31,6 +31,8 @@
         - visual-studio-code
         - rectangle
         - bitwarden
+        - vivaldi
+        - virtualbox
       tags:
         - brew
         - casks
@@ -51,6 +53,8 @@
         - tfenv
         - awscli
         - oh-my-posh
+        - tflint
+        - ack
       tags:
         - brew
         - formulae
