@@ -14,16 +14,9 @@
           - FiraCode-Medium.ttf
           - FiraCode-Regular.ttf
           - FiraCode-Retina.ttf
-      # yamllint disable rule:comments-indentation
-      # - name: Monoid
-      #   archive: https://github.com/jb-dmitry/monoid.git
-      #   directory: Monoisome
-      #   files:
-      #     - Monoisome-Regular.ttf
-      # yamllint enable rule:comments-indentation
   tasks:
     - name: Install casks
-      homebrew_cask:
+      community.general.homebrew_cask:
         name: "{{ item }}"
         state: present
       loop:
@@ -32,7 +25,10 @@
         - rectangle
         - bitwarden
         - vivaldi
-        - virtualbox
+        - docker
+        - utm
+        - vagrant
+        - vagrant-manager
       tags:
         - brew
         - casks
@@ -55,21 +51,10 @@
         - oh-my-posh
         - tflint
         - ack
+        - vagrant-completion
       tags:
         - brew
         - formulae
-    - name: Install terraform variants
-      ansible.builtin.command:
-        argv:
-          - tfenv
-          - install
-          - "{{ item }}"
-      loop:
-        - 0.13.5
-        - 0.13.7
-        - 0.14.11
-        - 1.3.2
-        - 1.3.7
     - name: Update and upgrade homebrew software
       community.general.homebrew:
         update_homebrew: true
@@ -77,14 +62,15 @@
     - name: Mac Fonts | Download repositories
       ansible.builtin.get_url:
         url: "{{ item.archive }}"
-        dest: "/tmp/{{ item.archive.split('/')|last }}"
+        dest: "/tmp/{{ item.archive.split('/') | last }}"
+        mode: ug=rw
       with_items: "{{ fonts_details }}"
       tags:
         - fonts
         - never
     - name: Mac Fonts | Unzip
       ansible.builtin.unarchive:
-        src: "/tmp/{{ item.archive.split('/')|last }}"
+        src: "/tmp/{{ item.archive.split('/') | last }}"
         dest: "/tmp"
       with_items: "{{ fonts_details }}"
       tags:
@@ -108,3 +94,18 @@
         search_string: "oh-my-posh init zsh"
       tags:
         - config_files
+    - name: Pimp my nvim courtesy of James Tooze | clone
+      ansible.builtin.git:
+        dest: "/tmp/neovimfiles"
+        repo: "https://github.com/toozej/neovimfiles.git"
+        single_branch: true
+      tags:
+        - config_files
+        - neovim
+    - name: Pimp my nvim courtesy of James Tooze | install
+      ansible.builtin.command:
+        cmd: ./setup.sh
+        chdir: /tmp/neovimfiles
+      tags:
+        - config_files
+        - neovim
