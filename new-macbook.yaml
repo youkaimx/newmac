@@ -78,7 +78,7 @@
         - fonts
         - never
     - name: Mac Fonts | Install fonts from repositories
-      copy:
+      ansible.builtin.copy:
         src: "/tmp/{{ item.0.directory }}/{{ item.1 }}"
         dest: "/Users/{{ lookup('env', 'USER') }}/Library/Fonts/{{ item.1 }}"
       with_subelements:

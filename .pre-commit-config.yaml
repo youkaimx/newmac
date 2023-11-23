@@ -20,3 +20,14 @@ repos:
     rev: 3.0.0
     hooks:
       - id: shellcheck
+#  - repo: https://github.com/IamTheFij/ansible-pre-commit
+#    rev: v1.0.0
+#    hooks:
+#      - id: encryption-check
+#  - repo: https://github.com/ansible-community/ansible-lint
+#    rev: v6.22.0
+#    hooks:
+#      - id: ansible-lint
+#        additional_dependencies:
+#          - ansible
+#
