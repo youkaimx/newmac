@@ -46,12 +46,13 @@
         - yq
         - golang
         - nvim
-        - tfenv
         - awscli
         - oh-my-posh
         - tflint
         - ack
-        - vagrant-completion
+        # Go Language Server
+        - gopls
+        - checkov
       tags:
         - brew
         - formulae
