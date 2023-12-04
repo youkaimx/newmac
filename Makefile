@@ -7,5 +7,11 @@ precommit-install:
 precommit-autoupdate:
 	pre-commit autoupdate
 
-run:
+all:
 	ansible-playbook -i inventory new-macbook.yaml
+
+formulae:
+	ansible-playbook -i inventory new-macbook.yaml --tasks formulae
+
+casks:
+	ansible-playbook -i inventory new-macbook.yaml --tags casks

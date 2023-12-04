@@ -27,8 +27,7 @@
         - vivaldi
         - docker
         - utm
-        - vagrant
-        - vagrant-manager
+        - firefox
       tags:
         - brew
         - casks
@@ -46,12 +45,16 @@
         - yq
         - golang
         - nvim
-        - tfenv
         - awscli
         - oh-my-posh
         - tflint
         - ack
-        - vagrant-completion
+        # Go Language Server
+        - gopls
+        - checkov
+        - terraform
+        - kubectx
+        - eksctl
       tags:
         - brew
         - formulae
@@ -77,7 +80,7 @@
         - fonts
         - never
     - name: Mac Fonts | Install fonts from repositories
-      copy:
+      ansible.builtin.copy:
         src: "/tmp/{{ item.0.directory }}/{{ item.1 }}"
         dest: "/Users/{{ lookup('env', 'USER') }}/Library/Fonts/{{ item.1 }}"
       with_subelements:
