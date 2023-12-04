@@ -27,8 +27,7 @@
         - vivaldi
         - docker
         - utm
-        - vagrant
-        - vagrant-manager
+        - firefox
       tags:
         - brew
         - casks
@@ -53,6 +52,9 @@
         # Go Language Server
         - gopls
         - checkov
+        - terraform
+        - kubectx
+        - eksctl
       tags:
         - brew
         - formulae
