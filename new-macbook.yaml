@@ -55,6 +55,7 @@
         - terraform
         - kubectx
         - eksctl
+        - helm
       tags:
         - brew
         - formulae
